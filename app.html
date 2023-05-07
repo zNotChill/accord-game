@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>money simulator</title>
+  <link rel="stylesheet" href="./src/css/app.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div class="navbar">
+      <div class="title">
+        Money Simulator
+      </div>
+      <div class="items game dropdown">
+        <strong class="js-game-name dropdown-activator" title="Your Great game (click)">Stats</strong>
+        <div class="js-stats-dropdown dropdown-content">
+          User Stats
+          <div class="dropdown-splitter"></div>
+          
+          <small class="right">
+            (0-100)
+          </small>
+          <div class="game-attribute">
+            <span class="attribute">
+              Intelligence
+            </span>
+            <span class="value js-game-attribute-intel">
+              0
+            </span>
+          </div>
+          <div class="game-attribute">
+            <span class="attribute">
+              Personality
+            </span>
+            <span class="value js-game-attribute-personality">
+              0
+            </span>
+          </div>
+          <div class="game-attribute">
+            <span class="attribute">
+              Potential
+            </span>
+            <span class="value js-game-attribute-pot">
+              0
+            </span>
+          </div>
+          <div class="game-attribute">
+            <span class="attribute">
+              Reputation
+            </span>
+            <span class="value js-game-attribute-rep">
+              0
+            </span>
+          </div>
+
+          <div class="dropdown-splitter"></div>
+          
+          <div class="game-attribute">
+            <span class="attribute">
+              Rating
+            </span>
+            <span class="value js-game-attribute-rating">
+              0
+            </span>
+          </div>
+
+          <div class="dropdown-empty"></div>
+          Game Stats
+          <div class="dropdown-splitter"></div>
+
+          <div class="game-attribute">
+            <span class="attribute">
+              Money
+            </span>
+            <span class="value js-game-attribute-money">
+              0
+            </span>
+          </div>
+        </div>
+        <div class="money">
+          <span class="id">$</span>
+          <strong class="js-money">0</strong>
+          <span class="multiplier js-multiplier">(x1)</span>
+        </div>
+      </div>
+
+      <a class="button" onclick="save();">Save</a>
+      <a class="button" onclick="reset();">Reset</a>
+
+    </div>
+    <div class="sidebar">
+      <small>
+        See the help section for help!
+      </small>
+      <a class="button" onclick="game.openHelp();">Help</a>
+      <a class="button" onclick="game.openShop();">Shop</a>
+    </div>
+
+    <div class="bottom-popup">
+      <div class="wrapper">
+        <div class=""></div>
+      </div>
+    </div>
+  </div>
+</body>
+  <script src="./src/js/cli.js"></script>
+  <script src="./src/js/popup.js"></script>
+  <script src="./src/js/dropdown.js"></script>
+  <script src="./src/js/frame.js"></script>
+  <script src="./src/js/achievements.js"></script>
+  <script src="./src/js/app.js"></script>
+</html>
