@@ -127,14 +127,15 @@ function writeToCli(text, type) {
   `;
 }
 
+var cliActivated = false;
+var cliCommands = 0;
+
 function initCli() {
 
   if(cliInit) return error(`Cli has already been initialized!`);
 
   cliInit = true;
   log(`Initialized Cli`);
-
-  var cliActivated = false;
 
   const cli = document.createElement("div");
   cli.classList.add("cli");
@@ -144,22 +145,51 @@ function initCli() {
     <div class="cli-wrapper">
       <div class="cli-body">
         <div class="cli-output js-cli-output">
+          <br>
           <div class="cli-output-text js-cli-output-text">
-            BSM Cli
+            Simulator Cli
           </div>
+          
+          <br>
+
+          <div class="cli-output-text js-cli-output-text">
+            Type "help" for a list of commands
+          </div>
+          <br>
+          
+          <span class="cli-output-text js-cli-output-text js-input">
+            <span class="cli-output-text js-cli-output-text">
+              <span class="cli-type-log">$</span>
+              <span class="cli-type-debug">~</span>
+            </span>
+            <span type="text" class="empty cli-input-text js-cli-input-text"></span>
+          </span>
         </div>
-      </div>
-      <div class="cli-input">
-        <input type="text" class="cli-input-text js-cli-input-text" placeholder="Enter command here...">
       </div>
     </div>
   `;
   document.querySelector("#app").appendChild(cli);
   cli.style.display = "none";
-  cli.querySelector(".js-cli-input-text").addEventListener("keydown", (e) => {
+
+  document.addEventListener("keydown", (e) => {
+    if(!cliActivated) return;
+    const regex = /^[A-Za-z0-9\s]*$/;
+
+    if(e.keyCode === 32) {
+      const value = cli.querySelector(".js-cli-input-text");
+      value.innerHTML += "&nbsp;";
+    }
+    if(regex.test(e.key) && e.key.length === 1) {
+      const value = cli.querySelector(".js-cli-input-text");
+      value.innerText += e.key;
+    }
+    if(e.key === "Backspace") {
+      const value = cli.querySelector(".js-cli-input-text");
+      value.innerText = value.innerText.slice(0, -1);
+    }  
     if(e.key === "Enter") {
-      const input = cli.querySelector(".js-cli-input-text").value;
-      cli.querySelector(".js-cli-input-text").value = "";
+      const input = cli.querySelector(".js-cli-input-text").innerText;
+      cli.querySelector(".js-cli-input-text").innerText = "";
       log(`CLI Input: ${input}`);
       cli.focus();
 
@@ -180,7 +210,27 @@ function initCli() {
       if(!commandValid) {
         writeToCli(`Command "${input}" not found!`, "error");
       }
+
+      // Move the input to the bottom
+      const inputNode = document.querySelector(".cli-body .js-cli-input-text");
+
+      console.log(inputNode.innerText );
+      inputNode.classList.remove("js-cli-input-text");
+      inputNode.innerText = input;
+      const newInput = document.createElement("span");
+
+      newInput.innerHTML = inputNode.parentNode.innerHTML;
+      newInput.classList.add("js-input");
+      newInput.classList.add("cli-output-text");
+      newInput.classList.add("js-cli-output-text");
+
+      newInput.querySelector(".cli-input-text").classList.add("js-cli-input-text");
+      newInput.querySelector(".js-cli-input-text").innerText = "";
+
+      cli.querySelector(".js-cli-output").appendChild(newInput);
+
     }
+    cliCommands++;
   })
 
   document.addEventListener("keyup", (e) => {

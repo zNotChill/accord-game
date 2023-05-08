@@ -3,7 +3,9 @@
 :root {
   --background: #1e1e1e;
   --text: #fff;
-  --accent: #54c15d;
+  --accent-hue: 125;
+  --accent: hsl(var(--accent-hue), 47%, 54%);
+  --accent-dark: hsl(var(--accent-hue), 47%, 44%);
   --font: 'Fira Mono', monospace;
 }
 
@@ -32,6 +34,13 @@ html, #app {
   padding: 20px;
   font-family: var(--font);
   background-color: var(--background);
+}
+
+.grid-2 {
+  display: grid;
+  width: 1000px;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 10px;
 }
 
 .navbar {
@@ -104,10 +113,13 @@ input:not(.empty) {
 input.empty {
   user-select: none;
   cursor: text;
-  border: 1px solid var(--accent);
+  border: 0px;
+  font-size: 16px;
+  font-family: var(--font);
+  outline: 0px;
+  background-color: transparent;
   color: #fff;
-  width: 0px;
-  height: 0px;
+  height: 16px;
 }
 
 .dropdown {
@@ -167,6 +179,7 @@ input.empty {
   top: 0;
   left: 0;
   z-index: 999;
+  background-color: rgba(0,0,0,.5);
 }
 
 .popup .popup-wrapper {
@@ -204,6 +217,15 @@ input.empty {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+}
+
+@media (max-width: 1080px) {
+  .popup .popup-wrapper {
+    width: 900px;
+  }
+  .shop-item {
+    width: 450px;
+  }
 }
 
 .bottom-popup {
@@ -271,6 +293,8 @@ input.empty {
   padding: 0 20px;
   z-index: 1000;
   color: #fff;
+  overflow-y: scroll;
+  outline: hidden;
 }
 .cli .cli-header {
   display: flex;
@@ -308,11 +332,13 @@ input.empty {
   transition: 0.1s linear;
   cursor: pointer;
   gap: 50px;
+  background-color: #121212;
 }
 .shop-item:hover {
   background-color: #121212;
 }
 
-.shop-item.disabled {
-  background-color: #1c1c1c;
+:root .shop-item.shop-item-disabled {
+  background-color: #1c1c1c7d;
+  --accent-hue: 10;
 }

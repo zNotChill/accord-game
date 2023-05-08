@@ -8,6 +8,16 @@
   <link rel="stylesheet" href="./src/css/app.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
+<!-- 
+  Hi! If you're reading this, you're probably trying to figure out how this game works.
+
+  I don't even know either, as most of the code I wrote here has been troubleshooted around a million times
+  and I don't even know what I'm doing anymore.
+
+  Safe Travels and Good Luck on your Journey!
+-->
+
 <body>
   <div id="app">
     <div class="navbar">
@@ -20,9 +30,6 @@
           User Stats
           <div class="dropdown-splitter"></div>
           
-          <small class="right">
-            (0-100)
-          </small>
           <div class="game-attribute">
             <span class="attribute">
               Intelligence
@@ -95,8 +102,9 @@
       <small>
         See the help section for help!
       </small>
-      <a class="button" onclick="game.openHelp();">Help</a>
+      <a class="button" onclick="openHelp();">Help</a>
       <a class="button" onclick="game.openShop();">Shop</a>
+      <a class="button" onclick="game.openAchievements();">Achievements</a>
     </div>
 
     <div class="bottom-popup">
@@ -112,4 +120,6 @@
   <script src="./src/js/frame.js"></script>
   <script src="./src/js/achievements.js"></script>
   <script src="./src/js/app.js"></script>
+  <script src="./src/js/help.js"></script>
+  <script src="./src/js/temp.js"></script>
 </html>

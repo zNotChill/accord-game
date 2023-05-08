@@ -54,6 +54,21 @@ if(!temp.achievements) {
 if(!temp.shop) {
   temp.shop = game.shop;
 }
+// Check for shop changes
+const ignoredShopKeys = [
+  "count",
+  "unlocked",
+  "price",
+]
+temp.shop.forEach((v) => {
+  Object.keys(v).forEach((i) => {
+    if(!ignoredShopKeys.includes(i)) {
+      if(v[i] != game.shop[v.id][i]) {
+        v[i] = game.shop[v.id][i];
+      }
+    }
+  })
+})
 
 //
 
@@ -110,7 +125,7 @@ function reset() {
     buttons: ["yes", "no"],
     onConfirm: () => {
       isResetting = true;
-      location.href = "/"
+      location.href = "./index.html"
       data.deleteData();
 
       setTimeout(() => {
@@ -138,6 +153,24 @@ setInterval(() => {
   if(intervalIndex >= 10) {
     intervalIndex = 0;
     if(!isResetting) {
+
+      const fs = require("fs");
+      const path = require("path");
+
+      const savePath = path.join(__dirname + "/tempdata.json");
+      const savePath2 = path.join(__dirname + "/tempdata.txt");
+
+      fs.writeFileSync(savePath, JSON.stringify(temp), "utf-8", (err) => {
+        if(err) {
+          error(err);
+        }
+      });
+      fs.writeFileSync(savePath2, JSON.stringify(temp.player.money), "utf-8", (err) => {
+        if(err) {
+          error(err);
+        }
+      });
+
       data.saveData();
       log(`Saved data`);
     }
@@ -147,11 +180,25 @@ setInterval(() => {
 
 }, updateInterval);
 
-
 // I'm way too stupid to actually add a proper idle income system, so I'm just gonna do this
-setInterval(() => {
-  console.log(`${temp.player.idleIncomeSpeed}`);
+function checkForIdleIncome() {
   if(temp.player.enableIdleIncome) {
     createMoney();
+  }
+}
+
+let idleIncomeInterval = temp.player.idleIncomeSpeed;
+let idleIncome = setInterval(() => {
+  checkForIdleIncome();
+
+  // checks for changes in idle income speed
+  log(idleIncomeInterval != temp.player.idleIncomeSpeed)
+  if(idleIncomeInterval != temp.player.idleIncomeSpeed) {
+    log("a")
+    idleIncomeInterval = temp.player.idleIncomeSpeed;
+    clearInterval(idleIncome);
+    idleIncome = setInterval(() => {
+      checkForIdleIncome();
+    }, temp.player.idleIncomeSpeed);
   }
 }, temp.player.idleIncomeSpeed);
