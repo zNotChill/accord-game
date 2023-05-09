@@ -17,6 +17,7 @@ const createWindow = () => {
     autoHideMenuBar: true,
     webPreferences: {
       // Security 101
+      // TODO: Find a workaround for this and singlehandedly save the world
       nodeIntegration: true,
       nodeIntegrationInWorker: true,
       nodeIntegrationInSubFrames: true,

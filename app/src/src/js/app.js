@@ -188,17 +188,20 @@ function checkForIdleIncome() {
 }
 
 let idleIncomeInterval = temp.player.idleIncomeSpeed;
-let idleIncome = setInterval(() => {
+
+let idleIncomeCode = () => {
   checkForIdleIncome();
 
-  // checks for changes in idle income speed
-  log(idleIncomeInterval != temp.player.idleIncomeSpeed)
+  log("Has detected a change in idle income speed:" + idleIncomeInterval != temp.player.idleIncomeSpeed)
   if(idleIncomeInterval != temp.player.idleIncomeSpeed) {
     log("a")
     idleIncomeInterval = temp.player.idleIncomeSpeed;
     clearInterval(idleIncome);
     idleIncome = setInterval(() => {
-      checkForIdleIncome();
+      idleIncomeCode();
     }, temp.player.idleIncomeSpeed);
   }
+}
+let idleIncome = setInterval(() => {
+  idleIncomeCode();
 }, temp.player.idleIncomeSpeed);
