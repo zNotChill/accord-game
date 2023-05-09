@@ -24,7 +24,7 @@ class Game {
     this.intelligence = i || Math.floor(Math.random() * 100) + 1;
     this.potential = po || Math.floor(Math.random() * 100) + 1;
     this.rating = ra || this.rating();
-    
+
     this.shop = [
       {
         name: "Start",
