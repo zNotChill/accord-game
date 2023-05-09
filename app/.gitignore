@@ -1,6 +1,5 @@
 
-tempdata.json
-tempdata.txt
+tempdata.*
 # Logs
 logs
 *.log
