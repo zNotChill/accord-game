@@ -208,6 +208,36 @@ class Game {
     });
     this.updateShop();
   }
+
+  openTasks() {
+    spawnPopup({
+      title: "Tasks",
+      content: `
+        <div class="tasks js-tasks-popup">
+          <div class="task">
+            <div class="task-header">
+              <div class="task-name">Test</div>
+              <div class="task-reward">
+                <strong class="accent">$</strong>
+                <span class="task-reward-value">100</span>
+              </div>
+            </div>
+            <div class="task-description">Test</div>
+            <div class="task-progress">
+              <div class="task-progress-bar">
+                <div class="task-progress-bar-fill"></div>
+              </div>
+              <div class="task-progress-text">0/100</div>
+            </div>
+            <a class="button task-claim js-claim-task">Claim</a>
+          </div>
+        </div>
+      `,
+      buttons: [
+        "close"
+      ]
+    });
+  }
 }
 
 class Data {
