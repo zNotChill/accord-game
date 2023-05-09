@@ -172,7 +172,6 @@ setInterval(() => {
       });
 
       data.saveData();
-      log(`Saved data`);
     }
   } else {
     intervalIndex++;
@@ -192,9 +191,7 @@ let idleIncomeInterval = temp.player.idleIncomeSpeed;
 let idleIncomeCode = () => {
   checkForIdleIncome();
 
-  log("Has detected a change in idle income speed:" + idleIncomeInterval != temp.player.idleIncomeSpeed)
   if(idleIncomeInterval != temp.player.idleIncomeSpeed) {
-    log("a")
     idleIncomeInterval = temp.player.idleIncomeSpeed;
     clearInterval(idleIncome);
     idleIncome = setInterval(() => {

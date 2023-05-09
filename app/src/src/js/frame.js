@@ -115,7 +115,6 @@ class Game {
           it.classList.add("shop-item-disabled");
         }
 
-        console.log(item);
         it.innerHTML = `
           <div class="shop-item-header">
             <div class="shop-item-name">${item.name}</div>
@@ -157,7 +156,6 @@ class Game {
                 if(temp.game[i]) {
                   temp.game[i] += get;
                 } else {
-                  console.log(temp.player[i]);
                   bottomPopup(`Error while buying ${v.name}! Invalid effect <strong class="accent">${i}</strong>!`);
                 }
               } else {

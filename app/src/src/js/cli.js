@@ -101,7 +101,6 @@ var commands = [
       `;
       let ending = `(✓)`;
       temp.achievements.achievements.forEach((v) => {
-        log(v.unlocked);
         output += `
           <div class="cli-output-text js-cli-output-text cli-type-info">
             ${v.name}: ${v.description} ${v.unlocked ? ending : ""}
@@ -214,7 +213,6 @@ function initCli() {
       // Move the input to the bottom
       const inputNode = document.querySelector(".cli-body .js-cli-input-text");
 
-      console.log(inputNode.innerText );
       inputNode.classList.remove("js-cli-input-text");
       inputNode.innerText = input;
       const newInput = document.createElement("span");
