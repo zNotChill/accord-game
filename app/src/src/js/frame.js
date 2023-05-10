@@ -15,6 +15,15 @@ info = (log) => {
 function lsGet(key) {
   return localStorage.getItem(key);
 }
+function formatNum(num) {
+  return num.toLocaleString('en-US');
+}
+function shortFormat(num) {
+  let units = ['k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
+  let floor = Math.floor(Math.abs(num).toString().length / 3);
+  let value =+ (num / Math.pow(1000, floor))
+  return value.toFixed(value > 1?digits:2) + units[floor - 1];
+}
 
 
 class Game {
@@ -25,6 +34,9 @@ class Game {
     this.potential = po || Math.floor(Math.random() * 100) + 1;
     this.rating = ra || this.rating();
 
+    this.frenzy = false;
+    this.frenzyTime = 0;
+    this.activateFrenzy = this.activateFrenzy;
     this.shop = [
       {
         name: "Start",
@@ -48,7 +60,7 @@ class Game {
         type: "test",
         unlocked: false,
         count: 0,
-        max: 20,
+        max: 24,
         effect: {
           idleIncomeSpeed: 40,
         }
@@ -81,6 +93,35 @@ class Game {
           intelligence: 1,
         }
       },
+      {
+        name: "Bookshelf",
+        price: 5000,
+        plusPrice: 600,
+        id: 4,
+        description: "Adds 15x to money multiplier and adds 1 to intelligence",
+        type: "test",
+        unlocked: false,
+        count: 0,
+        effect: {
+          multiplier: 15,
+          intelligence: 1,
+        }
+      },
+      {
+        name: "Library",
+        price: 100000,
+        plusPrice: 10000,
+        id: 5,
+        description: "Adds 150x to money multiplier and adds 50 to intelligence",
+        type: "test",
+        unlocked: false,
+        count: 0,
+        effect: {
+          multiplier: 150,
+          intelligence: 50,
+        }
+      },
+
     ];
     this.shopOpen = false;
     this.openShop = this.openShop;
@@ -91,47 +132,50 @@ class Game {
   }
   updateShop() {
 
-    document.querySelector(".js-shop-popup").innerHTML = "";
+    document.querySelector(".js-item-popup").innerHTML = "";
     
     // columns
 
     const maxColumns = 3;
-    const maxItemsPerCol = 5;
+    const maxItemsPerCol = 4;
 
     for (let i = 0; i < maxColumns; i++) {
       const el = document.createElement("div");
-      el.classList.add("shop-column");
-      el.setAttribute("data-shop-column-id", i);
-      document.querySelector(".js-shop-popup").appendChild(el);
+      el.classList.add("item-column");
+      el.setAttribute("data-item-column-id", i);
+      document.querySelector(".js-item-popup").appendChild(el);
     
       for (let e = 0; e < maxItemsPerCol; e++) {
         var item = temp.shop[i * maxItemsPerCol + e];
         if(!item) return;
 
         const it = document.createElement("div");
-        it.classList.add("shop-item");
+        it.classList.add("item");
 
         if(item.oneTime && item.count > 0 || item.count >= item.max) {
-          it.classList.add("shop-item-disabled");
+          it.classList.add("item-disabled");
         }
 
         it.innerHTML = `
-          <div class="shop-item-header">
-            <div class="shop-item-name">${item.name}</div>
-            <div class="shop-item-price">
-              <strong class="accent">$</strong>
-              <span class="shop-item-price-value">${item.price}</span>
-              <small>|</small>
-              <strong class="accent">${item.count}</strong>${item.max ? `<small>/</small><strong class="accent">${item.max}</strong>` : ""}
+          <div class="item-header">
+            <div class="item-title">
+              <span class="item-name">
+                ${item.name}
+              </span>
+              <small>&bull;</small>
+              <span class="item-price">
+                <strong class="accent">$</strong>
+                <span class="item-price-value">${item.price}</span>
+                <small>|</small>
+                <strong class="accent">${item.count}</strong>${item.max ? `<small>/</small><strong class="accent">${item.max}</strong>` : ""}
+              </span>
             </div>
-            <small class="shop-item-description">${item.description}</small>
+            <small class="item-description">${item.description}</small>
           </div>
-          <a class="button shop-item-buy js-buy-item-shop">Buy</a>
           `
         el.appendChild(it);
 
-        const buy = it.querySelector(".js-buy-item-shop");
-        buy.addEventListener("click", () => {
+        it.addEventListener("click", () => {
           var v = temp.shop[i * maxItemsPerCol + e];
           if(v.price > temp.player.money || v.oneTime && v.count > 0 || v.count >= v.max) return;
           temp.player.money -= v.price;
@@ -199,7 +243,7 @@ class Game {
     spawnPopup({
       title: "Shop",
       content: `
-        <div class="shop js-shop-popup grid-2">
+        <div class="shop js-item-popup grid-2">
         </div>
       `,
       buttons: [
@@ -237,6 +281,40 @@ class Game {
         "close"
       ]
     });
+  }
+
+  activateFrenzy() {
+    if(this.frenzy) return;
+    this.frenzy = true;
+    this.frenzyTime = 30;
+
+    const m = 100 * temp.player.multiplier;
+
+    bottomPopup("Frenzy activated! +$" + m + " per second for 30 seconds!");
+
+    const root = document.querySelector(":root");
+    var accentHue = getComputedStyle(root).getPropertyValue("--accent-hue");
+    var tempHue = parseInt(accentHue);
+
+    let timer = 0;
+    let interval = setInterval(() => {
+      timer++;
+      if(timer === 10) {
+        timer = 0;
+          
+        this.frenzyTime--;
+        if(this.frenzyTime <= 0) {
+          this.frenzy = false;
+          this.frenzyTime = 0;
+          clearInterval(interval);
+          return;
+        }
+        temp.player.money += m;
+      }
+      tempHue += 1;
+      getComputedStyle(root).getPropertyValue("--accent-hue") = tempHue;
+    }, 100);
+
   }
 }
 

@@ -55,14 +55,14 @@ const templateData = {
 }
 
 for (const key in templateData) {
- if(!temp[key]) {
-   temp[key] = templateData[key];
- }
- for (const key2 in templateData[key]) {
-   if(!temp[key][key2]) {
-     temp[key][key2] = templateData[key][key2];
-   }
- }
+  if(!temp[key]) {
+    temp[key] = templateData[key];
+  }
+  for (const key2 in templateData[key]) {
+    if(!temp[key][key2]) {
+      temp[key][key2] = templateData[key][key2];
+    }
+  }
 }
 // Check for shop changes
 const ignoredShopKeys = [
@@ -109,7 +109,7 @@ function updateStats() {
   // game stats
 
   money.innerText = temp.player.money;
-  money2.innerText = temp.player.money;
+  money2.innerText = temp.player.money.toLocaleString('en-US');
   moneyMulti.innerText = `(x${temp.player.multiplier})`;
 }
 
@@ -167,15 +167,11 @@ setInterval(() => {
       const fs = require("fs");
       const path = require("path");
 
-      const savePath = path.join(__dirname + "/tempdata.json");
       const savePath2 = path.join(__dirname + "/tempdata.txt");
 
-      fs.writeFileSync(savePath, JSON.stringify(temp), "utf-8", (err) => {
-        if(err) {
-          error(err);
-        }
-      });
-      fs.writeFileSync(savePath2, JSON.stringify(temp.player.money), "utf-8", (err) => {
+      const parse = temp.replaceAll("\n", "\t")
+
+      fs.writeFileSync(savePath2, parse, "utf-8", (err) => {
         if(err) {
           error(err);
         }

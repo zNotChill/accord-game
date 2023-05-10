@@ -1,5 +1,6 @@
 const rpc = require("discord-rpc");
 const fs = require("fs");
+const { shortFormat, intToString } = require("./format");
 const client = new rpc.Client({ transport: 'ipc' });
 let config = {};
 let start = Date.now();
@@ -14,9 +15,14 @@ client.on('ready', () => {
   setInterval(() => {
     const data = fs.readFileSync(__dirname + "/tempdata.txt", "utf-8");
 
+    let format = JSON.parse(data);
+    let money = format.player.money;
+
+    console.log(money);
+
     config = {
       "LargeImage": "moneysim-rpc",
-      "State": `$${data} earned`,
+      "State": `$${intToString(money)} earned`,
     }  
     client.request('SET_ACTIVITY', {
       pid: process.pid,
