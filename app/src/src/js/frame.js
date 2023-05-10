@@ -24,7 +24,7 @@ class Game {
     this.intelligence = i || Math.floor(Math.random() * 100) + 1;
     this.potential = po || Math.floor(Math.random() * 100) + 1;
     this.rating = ra || this.rating();
-    
+
     this.shop = [
       {
         name: "Start",
@@ -115,7 +115,6 @@ class Game {
           it.classList.add("shop-item-disabled");
         }
 
-        console.log(item);
         it.innerHTML = `
           <div class="shop-item-header">
             <div class="shop-item-name">${item.name}</div>
@@ -157,7 +156,6 @@ class Game {
                 if(temp.game[i]) {
                   temp.game[i] += get;
                 } else {
-                  console.log(temp.player[i]);
                   bottomPopup(`Error while buying ${v.name}! Invalid effect <strong class="accent">${i}</strong>!`);
                 }
               } else {
@@ -209,6 +207,36 @@ class Game {
       ]
     });
     this.updateShop();
+  }
+
+  openTasks() {
+    spawnPopup({
+      title: "Tasks",
+      content: `
+        <div class="tasks js-tasks-popup">
+          <div class="task">
+            <div class="task-header">
+              <div class="task-name">Test</div>
+              <div class="task-reward">
+                <strong class="accent">$</strong>
+                <span class="task-reward-value">100</span>
+              </div>
+            </div>
+            <div class="task-description">Test</div>
+            <div class="task-progress">
+              <div class="task-progress-bar">
+                <div class="task-progress-bar-fill"></div>
+              </div>
+              <div class="task-progress-text">0/100</div>
+            </div>
+            <a class="button task-claim js-claim-task">Claim</a>
+          </div>
+        </div>
+      `,
+      buttons: [
+        "close"
+      ]
+    });
   }
 }
 

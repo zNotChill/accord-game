@@ -38,21 +38,31 @@ if(!data.dataExists()) {
   );
 }
 
-if(!temp.player) {
-  temp.player = {
+const templateData = {
+  player: {
     money: 0,
     multiplier: 1,
     enableIdleIncome: false,
     idleIncomeSpeed: 1000,
-  }
-}
-if(!temp.achievements) {
-  temp.achievements = {
+    level: 1,
+    xp: 0,
+    xpNeeded: 100,
+  },
+  achievements: {
     achievements
-  }
+  },
+  shop: game.shop,
 }
-if(!temp.shop) {
-  temp.shop = game.shop;
+
+for (const key in templateData) {
+ if(!temp[key]) {
+   temp[key] = templateData[key];
+ }
+ for (const key2 in templateData[key]) {
+   if(!temp[key][key2]) {
+     temp[key][key2] = templateData[key][key2];
+   }
+ }
 }
 // Check for shop changes
 const ignoredShopKeys = [
@@ -172,7 +182,6 @@ setInterval(() => {
       });
 
       data.saveData();
-      log(`Saved data`);
     }
   } else {
     intervalIndex++;
@@ -188,17 +197,18 @@ function checkForIdleIncome() {
 }
 
 let idleIncomeInterval = temp.player.idleIncomeSpeed;
-let idleIncome = setInterval(() => {
+
+let idleIncomeCode = () => {
   checkForIdleIncome();
 
-  // checks for changes in idle income speed
-  log(idleIncomeInterval != temp.player.idleIncomeSpeed)
   if(idleIncomeInterval != temp.player.idleIncomeSpeed) {
-    log("a")
     idleIncomeInterval = temp.player.idleIncomeSpeed;
     clearInterval(idleIncome);
     idleIncome = setInterval(() => {
-      checkForIdleIncome();
+      idleIncomeCode();
     }, temp.player.idleIncomeSpeed);
   }
+}
+let idleIncome = setInterval(() => {
+  idleIncomeCode();
 }, temp.player.idleIncomeSpeed);

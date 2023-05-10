@@ -296,6 +296,11 @@ input.empty {
   overflow-y: scroll;
   outline: hidden;
 }
+.cli::-webkit-scrollbar {
+  background-color: #fff;
+  margin: 10px;
+  width: 15px;
+}
 .cli .cli-header {
   display: flex;
   align-items: center;
@@ -303,9 +308,6 @@ input.empty {
   margin-bottom: 10px;
   font-size: 2rem;
   border-bottom: var(--accent) 1px solid;
-}
-.cli .cli-body .cli-output {
-  overflow-y: scroll;
 }
 .cli .cli-input {
   margin-top: auto;
