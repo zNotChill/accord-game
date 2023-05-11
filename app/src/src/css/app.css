@@ -155,6 +155,10 @@ input.empty {
 	padding: 5px;
   border: 1px solid var(--accent);
 }
+.dropdown.dropdown-right .dropdown-content {
+  top: 0;
+  left: 70px;
+}
 .dropdown-splitter {
   height: 0;
   border: 1px solid var(--accent);

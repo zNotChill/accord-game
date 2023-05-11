@@ -2,7 +2,7 @@
 // This may seem redundant and completely stupid,
 // but this completely resolves the issue where
 // saving in the first session of the game would
-// not work. No problem. You're welcome.
+// not work. No problem. Youre welcome.
 if(!sessionStorage.getItem("reloaded")) {
   window.location.reload();
   sessionStorage.setItem("reloaded", true);
@@ -47,6 +47,11 @@ const templateData = {
     level: 1,
     xp: 0,
     xpNeeded: 100,
+    frenzy: {
+      active: false,
+      time: 0,
+      multiplier: 1,
+    }
   },
   achievements: {
     achievements
@@ -100,17 +105,21 @@ function updateStats() {
   const money2 = document.querySelector(".js-money");
   const moneyMulti = document.querySelector(".js-multiplier");
 
-  intelligence.innerText = game.intelligence;
-  personality.innerText = game.personality;
-  reputation.innerText = game.reputation;
-  potential.innerText = game.potential;
-  rating.innerText = game.rating;
+  intelligence.innerText = intToString(game.intelligence);
+  personality.innerText = intToString(game.personality);
+  reputation.innerText = intToString(game.reputation);
+  potential.innerText = intToString(game.potential);
+  rating.innerText = intToString(game.rating);
 
   // game stats
 
-  money.innerText = temp.player.money;
-  money2.innerText = temp.player.money.toLocaleString('en-US');
-  moneyMulti.innerText = `(x${temp.player.multiplier})`;
+  money.innerText = intToString(temp.player.money);
+  if(temp.player.money > 100000000000) {
+    money2.innerText = intToString(temp.player.money);
+  } else {
+    money2.innerText = temp.player.money.toLocaleString('en-US');
+  }
+  moneyMulti.innerText = `(x${intToString(temp.player.multiplier)})`;
 }
 
 function createMoney() {
@@ -169,9 +178,13 @@ setInterval(() => {
 
       const savePath2 = path.join(__dirname + "/tempdata.txt");
 
-      const parse = temp.replaceAll("\n", "\t")
+      let parse = [
+        temp.player.money,
+        temp.player.multiplier,
+        temp.player.idleIncomeSpeed,
+      ];
 
-      fs.writeFileSync(savePath2, parse, "utf-8", (err) => {
+      fs.writeFileSync(savePath2, parse.join(" | "), "utf-8", (err) => {
         if(err) {
           error(err);
         }

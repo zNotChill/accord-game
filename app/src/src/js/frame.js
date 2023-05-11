@@ -18,12 +18,27 @@ function lsGet(key) {
 function formatNum(num) {
   return num.toLocaleString('en-US');
 }
-function shortFormat(num) {
-  let units = ['k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
-  let floor = Math.floor(Math.abs(num).toString().length / 3);
-  let value =+ (num / Math.pow(1000, floor))
-  return value.toFixed(value > 1?digits:2) + units[floor - 1];
-}
+const intToString = num => {
+  num = num.toString().replace(/[^0-9.]/g, '');
+  if (num < 1000) {
+      return num;
+  }
+  let si = [
+    {v: 1E3, s: "K"},
+    {v: 1E6, s: "M"},
+    {v: 1E9, s: "B"},
+    {v: 1E12, s: "T"},
+    {v: 1E15, s: "P"},
+    {v: 1E18, s: "E"}
+    ];
+  let index;
+  for (index = si.length - 1; index > 0; index--) {
+      if (num >= si[index].v) {
+          break;
+      }
+  }
+  return (num / si[index].v).toFixed(2).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, "$1") + si[index].s;
+};
 
 
 class Game {
@@ -33,10 +48,6 @@ class Game {
     this.intelligence = i || Math.floor(Math.random() * 100) + 1;
     this.potential = po || Math.floor(Math.random() * 100) + 1;
     this.rating = ra || this.rating();
-
-    this.frenzy = false;
-    this.frenzyTime = 0;
-    this.activateFrenzy = this.activateFrenzy;
     this.shop = [
       {
         name: "Start",
@@ -121,6 +132,35 @@ class Game {
           intelligence: 50,
         }
       },
+      {
+        name: "School",
+        price: 1000000,
+        plusPrice: 100000,
+        id: 6,
+        description: "Adds 1500x to money multiplier and adds 100 to intelligence",
+        type: "test",
+        unlocked: false,
+        count: 0,
+        effect: {
+          multiplier: 1500,
+          intelligence: 100,
+        }
+      },
+      {
+        name: "College",
+        price: 10000000,
+        plusPrice: 1000000,
+        id: 7,
+        description: "Adds 15000x to money multiplier and adds 500 to intelligence",
+        type: "test",
+        unlocked: false,
+        count: 0,
+        effect: {
+          multiplier: 15000,
+          intelligence: 500,
+        }
+      },
+
 
     ];
     this.shopOpen = false;
@@ -284,11 +324,16 @@ class Game {
   }
 
   activateFrenzy() {
-    if(this.frenzy) return;
-    this.frenzy = true;
-    this.frenzyTime = 30;
+    const frenzy = temp.player.frenzy;
+    if(frenzy.active) return;
+
+    console.log(frenzy);
 
     const m = 100 * temp.player.multiplier;
+
+    frenzy.time = 30;
+    frenzy.active = true;
+    frenzy.multiplier = m;
 
     bottomPopup("Frenzy activated! +$" + m + " per second for 30 seconds!");
 
@@ -302,17 +347,20 @@ class Game {
       if(timer === 10) {
         timer = 0;
           
-        this.frenzyTime--;
-        if(this.frenzyTime <= 0) {
-          this.frenzy = false;
-          this.frenzyTime = 0;
+        frenzy.time--;
+        if(frenzy.time <= 0) {
+          frenzy.active = false;
+          frenzy.time = 0;
           clearInterval(interval);
           return;
         }
         temp.player.money += m;
       }
       tempHue += 1;
-      getComputedStyle(root).getPropertyValue("--accent-hue") = tempHue;
+      if(tempHue === 360) {
+        tempHue = 0;
+      }
+      document.querySelector("html").style.setProperty("--accent-hue", tempHue);
     }, 100);
 
   }
