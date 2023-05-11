@@ -1,35 +1,54 @@
+
+const help = [
+  {
+    title: "How to play",
+    id: 0,
+    points: {
+      category: [
+        "<h2>Shop</h2>",
+        `
+        To get started, click the <strong>Shop</strong> button to open the shop,
+        then buy the Start item to get an instant boost of money.
+        `,
+        `
+          You buy a <strong>Computer</strong> to enable idle income and increase your money multiplier.
+          When you reach around <strong>$150</strong>, you can buy a <strong>Accelerator</strong> to increase your idle income speed.
+        `
+      ]
+    }
+  },
+]
+
+function setHelpPage(id) {
+  const sidebar = document.querySelector(".help-sidebar");
+  const content = document.querySelector(".help-content");
+
+  const page = help.find((s) => s.id == id);
+
+  content.innerHTML = `
+    <h1>${page.title}</h1><br>
+  `
+  page.points.category.forEach((p) => {
+    if(p.startsWith("<h2>")) {
+      content.innerHTML += p;
+    }
+    else {
+      content.innerHTML += `<p>${p}</p><br>`;
+    }
+  })
+}
+
 function openHelp() {
   spawnPopup({
     title: "Help",
     content: `
-      <div class="help">
-        <div class="help-item">
-          <div class="help-title">What is this?</div>
-          <div class="help-content">
-            <p>This is a game where you can buy and sell items to make money.</p>
-            <p>There are many items to buy and sell, and you can unlock more by completing achievements.</p>
-            <p>There are also many upgrades to buy, which will help you make more money.</p>
-            <p>There are also many achievements to complete, which will give you rewards.</p>
-          </div>
+      <div class="help grid-2" style="column-gap: 30px">
+        <div class="sidebar help-sidebar">
+          ${help.map((s) => {
+            return `<a class="button help-button button-sm" onclick="setHelpPage(${s.id})">${s.title}</a>`
+          }).join("")}
         </div>
-        <div class="help-item">
-          <div class="help-title">How do I play?</div>
-          <div class="help-content">
-            <p>Click the <strong>Buy</strong> button to buy an item.</p>
-            <p>Click the <strong>Sell</strong> button to sell an item.</p>
-            <p>Click the <strong>Shop</strong> button to open the shop.</p>
-            <p>Click the <strong>Upgrades</strong> button to open the upgrades.</p>
-            <p>Click the <strong>Achievements</strong> button to open the achievements.</p>
-            <p>Click the <strong>Help</strong> button to open this help.</p>
-          </div>
-        </div>
-        <div class="help-item">
-          <div class="help-title">What are the buttons at the top?</div>
-          <div class="help-content">
-            <p>The <strong>Stats</strong> button will create a dropdown showing your stats.</p>
-            <p>The <strong>Save</strong> button will save your progress.</p>
-            <p>The <strong>Reset</strong> button will reset your progress.</p>
-          </div>
+        <div class="help-content">
         </div>
       </div>
     `,
@@ -37,4 +56,5 @@ function openHelp() {
       "close"
     ]
   });
+  setHelpPage(0);
 }

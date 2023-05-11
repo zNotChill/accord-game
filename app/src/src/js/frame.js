@@ -205,7 +205,7 @@ class Game {
               <small>&bull;</small>
               <span class="item-price">
                 <strong class="accent">$</strong>
-                <span class="item-price-value">${item.price}</span>
+                <span class="item-price-value">${formatNum(item.price)}</span>
                 <small>|</small>
                 <strong class="accent">${item.count}</strong>${item.max ? `<small>/</small><strong class="accent">${item.max}</strong>` : ""}
               </span>
@@ -297,25 +297,7 @@ class Game {
     spawnPopup({
       title: "Tasks",
       content: `
-        <div class="tasks js-tasks-popup">
-          <div class="task">
-            <div class="task-header">
-              <div class="task-name">Test</div>
-              <div class="task-reward">
-                <strong class="accent">$</strong>
-                <span class="task-reward-value">100</span>
-              </div>
-            </div>
-            <div class="task-description">Test</div>
-            <div class="task-progress">
-              <div class="task-progress-bar">
-                <div class="task-progress-bar-fill"></div>
-              </div>
-              <div class="task-progress-text">0/100</div>
-            </div>
-            <a class="button task-claim js-claim-task">Claim</a>
-          </div>
-        </div>
+        coming soon™️
       `,
       buttons: [
         "close"
@@ -325,9 +307,8 @@ class Game {
 
   activateFrenzy() {
     const frenzy = temp.player.frenzy;
-    if(frenzy.active) return;
 
-    console.log(frenzy);
+    frenzy.active = false
 
     const m = 100 * temp.player.multiplier;
 
@@ -341,14 +322,24 @@ class Game {
     var accentHue = getComputedStyle(root).getPropertyValue("--accent-hue");
     var tempHue = parseInt(accentHue);
 
+    const setHue = (hue) => {
+      document.querySelector("html").style.setProperty("--accent-hue", hue);
+    }
+
     let timer = 0;
     let interval = setInterval(() => {
+      tempHue += 5;
+      if(tempHue >= 360) {
+        setHue(125);
+      }
+      setHue(tempHue);
       timer++;
       if(timer === 10) {
         timer = 0;
           
         frenzy.time--;
-        if(frenzy.time <= 0) {
+        console.log("a");
+        if(frenzy.time === 0) {
           frenzy.active = false;
           frenzy.time = 0;
           clearInterval(interval);
@@ -356,11 +347,6 @@ class Game {
         }
         temp.player.money += m;
       }
-      tempHue += 1;
-      if(tempHue === 360) {
-        tempHue = 0;
-      }
-      document.querySelector("html").style.setProperty("--accent-hue", tempHue);
     }, 100);
 
   }

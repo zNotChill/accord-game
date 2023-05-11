@@ -236,7 +236,7 @@ input.empty {
 }
 .popup .popup-body {
   margin-bottom: 10px;
-  display: block;
+  display: inline-block;
 }
 .popup .popup-footer {
   display: flex;
@@ -376,4 +376,10 @@ input.empty {
   filter: opacity(0.5);
   background-color: #2a2a2a;
   --accent-hue: 10;
+}
+
+/* help */
+
+.help-content {
+  width: 700px;
 }
