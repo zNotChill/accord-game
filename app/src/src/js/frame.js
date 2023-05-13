@@ -14,6 +14,10 @@ info = (log) => {
   console.log("%c SIM %c " + log, `background-color: lightblue; color: #000; ${fixedLogStyle}`, fixedLogMessageStyle);
 }
 
+function findSetting(setting) {
+  return temp.settings.find(x => x.id === setting);
+}
+
 function gameState(state) {
   temp.player.gameState = state;
   data.saveData();
@@ -289,6 +293,7 @@ class Game {
         "close"
       ]
     });
+
   }
   openShop() {
     gameState("Exploring Shop");
@@ -318,6 +323,53 @@ class Game {
         "close"
       ]
     });
+  }
+
+  // Settings
+
+  openSettings() {
+    gameState("Exploring Settings");
+    unlockAchievement(16);
+    spawnPopup({
+      title: "Settings",
+      content: `
+        <div class="settings">
+        </div>
+      `,
+      buttons: [
+        "close"
+      ]
+    });
+
+    for (const i in temp.settings) {
+      const v = temp.settings[i];
+
+      const el = document.createElement("div");
+      el.classList.add("setting");
+      el.innerHTML = `
+        <div class="upper">
+          <input class="toggle" type="checkbox" id="setting-${i}" ${v.enabled ? "checked" : ""}>
+          <strong>${v.name}</strong>
+        </div>
+        <small>${v.description}</small>
+      `;
+      
+      const toggle = el.querySelector("input.toggle");
+      toggle.addEventListener("change", () => {
+        if(v.enabled) {
+          v.enabled = false;
+          toggle.checked = false;
+        } else {
+          v.enabled = true;
+          toggle.checked = true;
+        }
+      });
+
+      const popup = document.querySelector(".popup-wrapper");
+  
+      popup.querySelector(".popup-body").appendChild(el);
+    }
+
   }
 
   activateFrenzy(time = 30) {

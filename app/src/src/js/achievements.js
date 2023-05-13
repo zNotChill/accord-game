@@ -152,6 +152,15 @@ var achievements = [
     points: 5,
     auto: true
   },
+  {
+    name: "Settings",
+    description: "Utilise the settings menu at least once",
+    id: 16,
+    unlocked: false,
+    unlockedAt: null,
+    points: 5,
+    auto: true
+  },
 
 ]
 

@@ -60,6 +60,20 @@ const templateData = {
     achievements
   },
   shop: game.shop,
+  settings: [
+    {
+      name: "Discord RPC",
+      description: "Enable Discord Rich Presence",
+      id: "discord-rpc",
+      enabled: true,
+    },
+    {
+      name: "Auto-saving",
+      description: "Enable auto-saving",
+      id: "auto-saving",
+      enabled: true,
+    },
+  ]
 }
 
 for (const key in templateData) {
@@ -72,6 +86,9 @@ for (const key in templateData) {
     }
   }
 }
+
+// TODO: Simplify all of these 3 functions into 1
+
 // Check for shop changes
 const ignoredShopKeys = [
   "count",
@@ -101,6 +118,24 @@ achievements.forEach((v, i) => {
       }
       if(temp.achievements.achievements[i][e] != v[e]) {
         temp.achievements.achievements[i][e] = v[e];
+      }
+    }
+  });
+})
+
+// Check for settings changes
+
+const ignoredSettingsKeys = [
+  "enabled",
+]
+templateData.settings.forEach((v, i) => {
+  Object.keys(v).forEach((e) => {
+    if(!ignoredSettingsKeys.includes(e)) {
+      if(!temp.settings[i]) {
+        temp.settings[i] = v;
+      }
+      if(temp.settings[i][e] != v[e]) {
+        temp.settings[i][e] = v[e];
       }
     }
   });
@@ -204,25 +239,7 @@ setInterval(() => {
   if(intervalIndex >= 10) {
     intervalIndex = 0;
     if(!isResetting) {
-
-      const fs = require("fs");
-      const path = require("path");
-
-      const savePath2 = path.join(__dirname + "/tempdata.txt");
-
-      let parse = [
-        temp.player.money,
-        temp.player.multiplier,
-        temp.player.idleIncomeSpeed,
-        temp.player.gameState
-      ];
-
-      fs.writeFileSync(savePath2, parse.join(" | "), "utf-8", (err) => {
-        if(err) {
-          error(err);
-        }
-      });
-
+      if(!findSetting("auto-saving").enabled) return
       data.saveData();
     }
   } else {
