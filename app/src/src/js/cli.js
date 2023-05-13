@@ -1,4 +1,6 @@
 
+// Copyright (c) zNotChill 2023. All rights reserved.
+
 var commands = [
   {
     name: "help",

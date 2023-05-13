@@ -1,4 +1,6 @@
 
+// Copyright (c) zNotChill 2023. All rights reserved.
+
 const help = [
   {
     title: "How to play",
@@ -39,6 +41,7 @@ function setHelpPage(id) {
 }
 
 function openHelp() {
+  unlockAchievement(12);
   spawnPopup({
     title: "Help",
     content: `

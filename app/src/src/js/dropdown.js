@@ -1,4 +1,6 @@
 
+// Copyright (c) zNotChill 2023. All rights reserved.
+
 let currentDropdown = null;
 let dropdownHovered = false;
 let dropdownGap = 20;

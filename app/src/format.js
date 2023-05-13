@@ -1,3 +1,6 @@
+
+// Copyright (c) zNotChill 2023. All rights reserved.
+
 function formatNum(num) {
   return num.toLocaleString('en-US');
 }

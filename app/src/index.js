@@ -1,3 +1,6 @@
+
+// Copyright (c) zNotChill 2023. All rights reserved.
+
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 

@@ -1,3 +1,6 @@
+
+/* Copyright (c) zNotChill 2023. All rights reserved. */
+
 @import url(https://fonts.bunny.net/css?family=fira-mono:400,500,700);
 
 :root {
@@ -381,5 +384,5 @@ input.empty {
 /* help */
 
 .help-content {
-  width: 700px;
+  width: 600px;
 }

@@ -1,3 +1,6 @@
+
+// Copyright (c) zNotChill 2023. All rights reserved.
+
 const possibleButtons = {
   confirm: `Confirm`,
   cancel: `Cancel`,
@@ -40,10 +43,12 @@ function spawnPopup({
   document.querySelector("#app").appendChild(popup);
   popup.querySelector(".popup-wrapper").style.display = "block";
   popup.querySelector(".popup-close").addEventListener("click", () => {
+    gameState("Idle");
     popup.remove();
   })
   buttons.forEach(button => {
     popup.querySelector(`#button-popup-${button}`).addEventListener("click", () => {
+      gameState("Idle");
       popup.remove();
       if(button === "yes" || button === "ok") onConfirm(button);
     })
@@ -100,12 +105,16 @@ function fullscreenPopup(
   document.querySelector("#app").appendChild(popup);
   popup.querySelector(".popup-wrapper").style.display = "block";
   popup.querySelector(".popup-close").addEventListener("click", () => {
+    gameState("Idle");
     popup.remove();
   })
   buttons.forEach(button => {
     popup.querySelector(`#button-popup-${button}`).addEventListener("click", () => {
+      gameState("Idle");
       popup.remove();
-      if(button === "yes" || button === "ok") onConfirm(button);
+      if(button === "yes" || button === "ok") {
+        onConfirm(button);
+      };
     })
   });
 }

@@ -1,3 +1,6 @@
+
+// Copyright (c) zNotChill 2023. All rights reserved.
+
 const rpc = require("discord-rpc");
 const fs = require("fs");
 const { shortFormat, intToString, formatNum } = require("./format");
@@ -20,16 +23,13 @@ client.on('ready', () => {
     let money = format[0];
     let multiplier = format[1];
     let idleIncomeSpeed = format[2];
-    let frenzy = format[3];
-    let frenzyTime = format[4];
+    let gameState = format[3];
     let frenzyMultiplier = format[5];
-
-    money += frenzyMultiplier;
 
     config = {
       "LargeImage": "moneysim-rpc",
-      "State": `$${intToString(multiplier * idleIncomeSpeed)}/s`,
-      "Details": `$${intToString(money)} earned`,
+      "State": `${gameState}`,
+      "Details": `$${intToString(money)} earned ($${intToString(multiplier + frenzyMultiplier)}/s)`,
     }  
     client.request('SET_ACTIVITY', {
       pid: process.pid,

@@ -1,3 +1,6 @@
+
+// Copyright (c) zNotChill 2023. All rights reserved.
+
 var achievements = [
   {
     name: "Welcome to the world",
@@ -110,6 +113,46 @@ var achievements = [
     points: 5,
     auto: true
   },
+
+  // menus
+
+  {
+    name: "Getting help",
+    description: "Utilise the help menu at least once",
+    id: 12,
+    unlocked: false,
+    unlockedAt: null,
+    points: 5,
+    auto: true
+  },
+  {
+    name: "Achievement Hunter",
+    description: "Utilise the achievements menu at least once",
+    id: 13,
+    unlocked: false,
+    unlockedAt: null,
+    points: 5,
+    auto: true
+  },
+  {
+    name: "Shop",
+    description: "Utilise the shop menu at least once",
+    id: 14,
+    unlocked: false,
+    unlockedAt: null,
+    points: 5,
+    auto: true
+  },
+  {
+    name: "Task Manager",
+    description: "Utilise the task menu at least once",
+    id: 15,
+    unlocked: false,
+    unlockedAt: null,
+    points: 5,
+    auto: true
+  },
+
 ]
 
 function getAchievementPoints() {

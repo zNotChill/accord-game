@@ -1,4 +1,6 @@
 
+// Copyright (c) zNotChill 2023. All rights reserved.
+
 // This may seem redundant and completely stupid,
 // but this completely resolves the issue where
 // saving in the first session of the game would
@@ -47,6 +49,7 @@ const templateData = {
     level: 1,
     xp: 0,
     xpNeeded: 100,
+    gameState: "Idle",
     frenzy: {
       active: false,
       time: 0,
@@ -83,6 +86,24 @@ temp.shop.forEach((v) => {
       }
     }
   })
+})
+
+// Check for achievement changes
+const ignoredAchievementKeys = [
+  "unlocked",
+  "unlockedAt",
+]
+achievements.forEach((v, i) => {
+  Object.keys(v).forEach((e) => {
+    if(!ignoredAchievementKeys.includes(e)) {
+      if(!temp.achievements.achievements[i]) {
+        temp.achievements.achievements[i] = v;
+      }
+      if(temp.achievements.achievements[i][e] != v[e]) {
+        temp.achievements.achievements[i][e] = v[e];
+      }
+    }
+  });
 })
 
 //
@@ -164,10 +185,21 @@ initCli();
 
 let updateInterval = 100;
 let intervalIndex = 0;
+let frenzyCheck = false;
+
+gameState("Idle");
 
 setInterval(() => {
   updateStats();
   checkForMoneyAchievements();
+
+  if(temp.player.frenzy.time === 30) {
+    frenzyCheck = true;
+  }
+  if(!frenzyCheck && temp.player.frenzy.time !== 30 && temp.player.frenzy.active) {
+    frenzyCheck = true;
+    game.activateFrenzy(temp.player.frenzy.time);
+  }
 
   if(intervalIndex >= 10) {
     intervalIndex = 0;
@@ -182,6 +214,7 @@ setInterval(() => {
         temp.player.money,
         temp.player.multiplier,
         temp.player.idleIncomeSpeed,
+        temp.player.gameState
       ];
 
       fs.writeFileSync(savePath2, parse.join(" | "), "utf-8", (err) => {

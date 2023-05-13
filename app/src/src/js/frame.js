@@ -1,4 +1,6 @@
 
+// Copyright (c) zNotChill 2023. All rights reserved.
+
 let fixedLogStyle = `border-radius: 5px; font-weight: 900; font-size: 12px`;
 let fixedLogMessageStyle = `font-size: 11px;`;
 
@@ -10,6 +12,11 @@ error = (log) => {
 }
 info = (log) => {
   console.log("%c SIM %c " + log, `background-color: lightblue; color: #000; ${fixedLogStyle}`, fixedLogMessageStyle);
+}
+
+function gameState(state) {
+  temp.player.gameState = state;
+  data.saveData();
 }
 
 function lsGet(key) {
@@ -48,6 +55,7 @@ class Game {
     this.intelligence = i || Math.floor(Math.random() * 100) + 1;
     this.potential = po || Math.floor(Math.random() * 100) + 1;
     this.rating = ra || this.rating();
+
     this.shop = [
       {
         name: "Start",
@@ -216,6 +224,7 @@ class Game {
         el.appendChild(it);
 
         it.addEventListener("click", () => {
+          unlockAchievement(11);
           var v = temp.shop[i * maxItemsPerCol + e];
           if(v.price > temp.player.money || v.oneTime && v.count > 0 || v.count >= v.max) return;
           temp.player.money -= v.price;
@@ -256,6 +265,8 @@ class Game {
     }
   }
   openAchievements() {
+    gameState("Exploring Achievements");
+    unlockAchievement(13);
     let content = ``;
     temp.achievements.achievements.forEach((v) => {
       content += `
@@ -280,6 +291,8 @@ class Game {
     });
   }
   openShop() {
+    gameState("Exploring Shop");
+    unlockAchievement(14);
     spawnPopup({
       title: "Shop",
       content: `
@@ -294,6 +307,8 @@ class Game {
   }
 
   openTasks() {
+    gameState("Exploring Tasks");
+    unlockAchievement(15);
     spawnPopup({
       title: "Tasks",
       content: `
@@ -305,18 +320,19 @@ class Game {
     });
   }
 
-  activateFrenzy() {
+  activateFrenzy(time = 30) {
     const frenzy = temp.player.frenzy;
 
-    frenzy.active = false
+    frenzy.active = false;
 
     const m = 100 * temp.player.multiplier;
 
-    frenzy.time = 30;
+    frenzy.time = time;
     frenzy.active = true;
     frenzy.multiplier = m;
+    temp.player.gameState = `Active Frenzy (${frenzy.time}s)`;
 
-    bottomPopup("Frenzy activated! +$" + m + " per second for 30 seconds!");
+    bottomPopup("Frenzy activated! +$" + intToString(m) + " per second for " + frenzy.time + " seconds!");
 
     const root = document.querySelector(":root");
     var accentHue = getComputedStyle(root).getPropertyValue("--accent-hue");
@@ -338,10 +354,11 @@ class Game {
         timer = 0;
           
         frenzy.time--;
-        console.log("a");
+        temp.player.gameState = `Active Frenzy (${frenzy.time}s)`;
         if(frenzy.time === 0) {
           frenzy.active = false;
           frenzy.time = 0;
+          temp.player.gameState = "Idle";
           clearInterval(interval);
           return;
         }
