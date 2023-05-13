@@ -1,0 +1,1 @@
+electron-packager ./app accord --platform=win32 --arch=x64 --overwrite
