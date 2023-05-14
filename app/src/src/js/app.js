@@ -239,6 +239,18 @@ setInterval(() => {
   if(intervalIndex >= 10) {
     intervalIndex = 0;
     if(!isResetting) {
+
+      const fs = require("fs");
+      const path = require("path");
+
+      const savePath = path.join(__dirname + "/tempdata.txt");
+
+      fs.writeFileSync(savePath, JSON.stringify(temp, null, 2), "utf-8", (err) => {
+        if(err) {
+          error(err);
+        }
+      });
+
       if(!findSetting("auto-saving").enabled) return
       data.saveData();
     }
