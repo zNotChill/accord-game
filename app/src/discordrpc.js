@@ -2,7 +2,6 @@
 // Copyright (c) zNotChill 2023. All rights reserved.
 
 const rpc = require("discord-rpc");
-const { Webhook, MessageBuilder } = require('discord-webhook-node');
 const fs = require("fs");
 const client = new rpc.Client({ transport: 'ipc' });
 let config = {};
