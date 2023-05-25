@@ -144,34 +144,6 @@ class Game {
           intelligence: 50,
         }
       },
-      {
-        name: "School",
-        price: 1000000,
-        plusPrice: 100000,
-        id: 6,
-        description: "Adds 1500x to money multiplier and adds 100 to intelligence",
-        type: "test",
-        unlocked: false,
-        count: 0,
-        effect: {
-          multiplier: 1500,
-          intelligence: 100,
-        }
-      },
-      {
-        name: "College",
-        price: 10000000,
-        plusPrice: 1000000,
-        id: 7,
-        description: "Adds 15000x to money multiplier and adds 500 to intelligence",
-        type: "test",
-        unlocked: false,
-        count: 0,
-        effect: {
-          multiplier: 15000,
-          intelligence: 500,
-        }
-      },
 
 
     ];
@@ -186,6 +158,19 @@ class Game {
 
     document.querySelector(".js-item-popup").innerHTML = "";
     
+    function calculatePriceFor(item, num) {
+      let total = item.price;
+
+      let count = item.count;
+      for (let i = 0; i < num; i++) {
+        let plus = item.plusPrice || 0;
+        count++;
+        total += Math.floor(item.price * (0.2 * (item.price / (item.price * (count / 4)))) + plus);
+      }
+
+      return total;
+    }
+
     // columns
 
     const maxColumns = 3;
@@ -204,7 +189,16 @@ class Game {
         const it = document.createElement("div");
         it.classList.add("item");
 
-        if(item.oneTime && item.count > 0 || item.count >= item.max) {
+        const enough = playerHasEnough(item);
+
+        console.log(item.count > 0 || 
+          item.max && item.count >= item.max ||
+          enough === false);
+        if(
+          item.count > 0 || 
+          item.max && item.count >= item.max ||
+          enough === false
+        ) {
           it.classList.add("item-disabled");
         }
 
@@ -227,8 +221,14 @@ class Game {
           `
         el.appendChild(it);
 
-        it.addEventListener("click", () => {
-          unlockAchievement(11);
+        function playerHasEnough(item) {
+          const price = temp.player.money >= item.price;
+
+          console.log(`${price} price`);
+          return price;
+        }
+
+        function buy() {
           var v = temp.shop[i * maxItemsPerCol + e];
           if(v.price > temp.player.money || v.oneTime && v.count > 0 || v.count >= v.max) return;
           temp.player.money -= v.price;
@@ -261,8 +261,15 @@ class Game {
             }
           }
 
-          this.updateShop();
+        }
 
+        it.addEventListener("click", () => {
+          unlockAchievement(11);
+
+          for (let i = 0; i < parseInt(temp.player.buyCount); i++) {
+            buy();
+            this.updateShop();
+          }
         });
 
       }
@@ -298,6 +305,11 @@ class Game {
   openShop() {
     gameState("Exploring Shop");
     unlockAchievement(14);
+    // <div class="shop-buy-count end">
+    //   <a class="button button-sm" onclick="temp.player.buyCount = 1;">1x</a>
+    //   <a class="button button-sm" onclick="temp.player.buyCount = 10;">10x</a>
+    //   <a class="button button-sm" onclick="temp.player.buyCount = 100;">100x</a>
+    // </div>
     spawnPopup({
       title: "Shop",
       content: `

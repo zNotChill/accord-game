@@ -3,8 +3,8 @@ const PORT = 19035;
 const { kelp } = require("./kelp");
 
 kelp.settings({
-  port: PORT,
-  options: [
+  PORT: PORT,
+  OPTIONS: [
     "body-parser",
     "cors",
     "ejs",
@@ -12,6 +12,9 @@ kelp.settings({
     "public",
     "routes",
   ],
+  HEARTBEAT: {
+    ROUTE: "/api/v1/heartbeat",
+  }
 });
 
 kelp.listen();

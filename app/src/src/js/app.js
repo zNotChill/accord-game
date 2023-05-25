@@ -44,6 +44,7 @@ const templateData = {
   player: {
     money: 0,
     multiplier: 1,
+    buyCount: 1,
     enableIdleIncome: false,
     idleIncomeSpeed: 1000,
     level: 1,
@@ -98,7 +99,7 @@ const ignoredShopKeys = [
 temp.shop.forEach((v) => {
   Object.keys(v).forEach((i) => {
     if(!ignoredShopKeys.includes(i)) {
-      if(v[i] != game.shop[v.id][i]) {
+      if(game.shop[v.id] && v[i] != game.shop[v.id][i]) {
         v[i] = game.shop[v.id][i];
       }
     }

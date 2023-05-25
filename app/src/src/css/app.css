@@ -4,7 +4,7 @@
 @import url(https://fonts.bunny.net/css?family=fira-mono:400,500,700);
 
 :root {
-  --background: #1e1e1e;
+  --background: #191919;
   --text: #fff;
   --accent-hue: 125;
   --accent: hsl(var(--accent-hue), 47%, 54%);
@@ -23,10 +23,11 @@ small {
   font-size: 12px;
   color: #a7a7a7;
 }
-small.right {
+small.right, .right {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  padding-bottom: 10px;
 }
 
 strong.accent {
@@ -43,6 +44,36 @@ html, #app {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   column-gap: 10px;
+}
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 10px;
+}
+.end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+}
+.evenly {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding-bottom: 10px;
+}
+.between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+}
+.around {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding-bottom: 10px;
 }
 
 .navbar {
