@@ -1,0 +1,138 @@
+@import url(https://fonts.bunny.net/css?family=fira-mono:400,500,700);
+
+:root {
+  --background: hsl(0, 0%, 10%);
+  --background-100: hsl(0, 0%, 20%);
+  --background-200: hsl(0, 0%, 30%);
+  --background-300: hsl(0, 0%, 40%);
+  --background-400: hsl(0, 0%, 50%);
+  --background-500: hsl(0, 0%, 60%);
+  --background-600: hsl(0, 0%, 70%);
+  --background-700: hsl(0, 0%, 80%);
+  --background-800: hsl(0, 0%, 90%);
+  --background-900: hsl(0, 0%, 100%);
+  --text: #fff;
+  --accent-hue: 125;
+  --accent: hsl(var(--accent-hue), 47%, 54%);
+  --accent-dark: hsl(var(--accent-hue), 47%, 44%);
+  --font: 'Fira Mono', monospace;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 500;
+}
+
+a.button {
+  display: block;
+  cursor: pointer;
+  width: fit-content;
+  text-decoration: none;
+  color: #fff;
+  background-color: var(--background);
+  border: 1px solid var(--accent);
+  padding: 10px 20px;
+}
+a.button:hover {
+  background-color: var(--accent);
+  color: var(--text);
+  transition: all 0.2s linear;
+}
+
+.menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 20px;
+  width: 100%;
+  height: 60px;
+  background: var(--background);
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================
+  NAVBAR 
+============================ */ 
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  background-color: var(--background);
+  border: 1px solid var(--accent);
+  padding: 10px;
+  padding-left: 30px;
+  margin: 20px;
+}
+.navbar .navbar-logo {
+  font-size: 22px;
+}
+.navbar-half {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  gap: 2.75rem;
+}
+
+/* ============================
+  DROPDOWNS 
+============================ */ 
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+.dropdown-header {
+  font-size: 18px;
+  font-weight: 900;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: var(--background);
+  border: 1px solid var(--accent);
+  padding: 10px;
+  min-width: 160px;
+  z-index: 1000;
+}
+.dropdown-content a {
+  color: var(--text);
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+.dropdown-splitter {
+  border-bottom: 1px solid var(--accent);
+  margin: 5px -10px;
+}
+.dropdown-content a:hover {
+  background-color: var(--background-100);
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+.dropdown:hover .dropbtn {
+  background-color: var(--background-100);
+}
